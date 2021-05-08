@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"kikoeru"
 	"math/rand"
+	"time"
 
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
+	rand.Seed(time.Now().Unix())
 	target := rand.Int() % 1000000
 	c := kikoeru.NewCoefontReader()
 	data, err := c.Read(target)
