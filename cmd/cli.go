@@ -11,7 +11,7 @@ import (
 
 func main() {
 	rand.Seed(time.Now().Unix())
-	target := rand.Int() % 1000000
+	target := rand.Int() % 100000
 	c := kikoeru.NewCoefontReader()
 	data, err := c.Read(target)
 	if err != nil {
