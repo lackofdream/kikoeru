@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/sirupsen/logrus"
+	"github.com/skratchdot/open-golang/open"
 )
 
 var coefontReader kikoeru.NumberToVoiceConverter
@@ -69,5 +70,6 @@ func main() {
 	})
 	webapp, _ := fs.Sub(kikoeru.Webapp, "webapp/build")
 	http.Handle("/", http.FileServer(http.FS(webapp)))
+	go open.Run("http://localhost:1145")
 	logrus.Fatal(http.ListenAndServe(":1145", nil))
 }
