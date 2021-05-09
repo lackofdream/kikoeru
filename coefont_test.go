@@ -10,7 +10,7 @@ func TestCoefontReader_Read(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = SyncPlay(res)
+	err = AsyncPlay(res)
 	if err != nil {
 		t.Fatal(err)
 	}

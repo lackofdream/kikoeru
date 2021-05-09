@@ -1,34 +1,73 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"io/fs"
 	"kikoeru"
-	"math/rand"
-	"time"
+	"net/http"
 
 	"github.com/sirupsen/logrus"
 )
 
+var coefontReader kikoeru.NumberToVoiceConverter
+
+func init() {
+	coefontReader = kikoeru.NewCoefontReader()
+}
+
+func Read(number int) error {
+	data, err := coefontReader.Read(number)
+	if err != nil {
+		return err
+	}
+	err = kikoeru.AsyncPlay(data)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+type ReadRequest struct {
+	Number int `json:"number"`
+}
+
+type ReadResponse struct {
+	Message string `json:"message"`
+}
+
 func main() {
-	rand.Seed(time.Now().Unix())
-	target := rand.Int() % 100000
-	c := kikoeru.NewCoefontReader()
-	data, err := c.Read(target)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-	err = kikoeru.SyncPlay(data)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-	var guess int
-	_, err = fmt.Scanf("%d", &guess)
-	if err != nil {
-		logrus.Fatal(err)
-	}
-	if guess != target {
-		fmt.Printf("wrong, answer is %d\n", target)
-	} else {
-		fmt.Println("ok")
-	}
+
+	http.HandleFunc("/api/read", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodOptions {
+
+			w.Header().Set("Access-Control-Allow-Headers", "*")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+			return
+		}
+
+		req := ReadRequest{}
+		err := json.NewDecoder(r.Body).Decode(&req)
+		_ = r.Body.Close()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = Read(req.Number)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+
+		w.Header().Set("Content-Type", "application/json")
+		resp, _ := json.Marshal(ReadResponse{Message: "ok"})
+		_, _ = w.Write(resp)
+	})
+	webapp, _ := fs.Sub(kikoeru.Webapp, "webapp/build")
+	http.Handle("/", http.FileServer(http.FS(webapp)))
+	logrus.Fatal(http.ListenAndServe(":1145", nil))
 }
