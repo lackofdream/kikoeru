@@ -31,7 +31,7 @@ func NewCoefontReader() *CoefontReader {
 	}
 }
 
-func (c CoefontReader) Read(number int) ([]byte, error) {
+func (c *CoefontReader) GetVoiceBytes(number int) ([]byte, error) {
 	header := req.Header{
 		"Content-Type": "application/json",
 	}

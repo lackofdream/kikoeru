@@ -4,13 +4,15 @@ import Game from './game';
 
 interface State {
     target: number
+    started: boolean
 }
 
 class App extends React.Component<Object, State> {
     constructor(props: Object) {
         super(props);
         this.state = {
-            target: -1
+            target: -1,
+            started: false
         }
     }
 
@@ -25,12 +27,17 @@ class App extends React.Component<Object, State> {
 
     render() {
         return (
-            <div className="GameContainer">
-                {this.state.target === -1 ? "" : <Game target={this.state.target} newGame={this.newGame}/>}
+            <div className="App">
+                {this.state.started ?
+                    <div className="GameContainer">
+                        {this.state.target === -1 ? "" : <Game target={this.state.target} newGame={this.newGame}/>}
+                    </div>
+                    :
+                    <button onClick={() => this.setState({started: true})}>Start</button>
+                }
             </div>
         );
     }
 }
-
 
 export default App;

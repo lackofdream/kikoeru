@@ -6,7 +6,7 @@ import (
 
 func TestCoefontReader_Read(t *testing.T) {
 	c := NewCoefontReader()
-	res, err := c.Read(114514)
+	res, err := c.GetVoiceBytes(114514)
 	if err != nil {
 		t.Fatal(err)
 	}

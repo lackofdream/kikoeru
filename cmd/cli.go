@@ -16,24 +16,8 @@ func init() {
 	coefontReader = kikoeru.NewCoefontReader()
 }
 
-func Read(number int) error {
-	data, err := coefontReader.Read(number)
-	if err != nil {
-		return err
-	}
-	err = kikoeru.AsyncPlay(data)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 type ReadRequest struct {
 	Number int `json:"number"`
-}
-
-type ReadResponse struct {
-	Message string `json:"message"`
 }
 
 func main() {
@@ -54,7 +38,7 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = Read(req.Number)
+		data, err := coefontReader.GetVoiceBytes(req.Number)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -64,9 +48,9 @@ func main() {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 
-		w.Header().Set("Content-Type", "application/json")
-		resp, _ := json.Marshal(ReadResponse{Message: "ok"})
-		_, _ = w.Write(resp)
+		w.Header().Set("Content-Type", "audio/wav")
+		w.Header().Set("Content-Disposition", "attachment; filename=kikoeru.wav")
+		_, _ = w.Write(data)
 	})
 	webapp, _ := fs.Sub(kikoeru.Webapp, "webapp/build")
 	http.Handle("/", http.FileServer(http.FS(webapp)))
