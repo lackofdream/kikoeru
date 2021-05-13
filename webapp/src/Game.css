@@ -1,0 +1,59 @@
+.Game {
+  width: 600px;
+  height: 400px;
+  background-color: rgb(50, 50, 50);
+  border-radius: 10px;
+  box-shadow: 0px 0px 25px black;
+  color: white;
+  padding: 10px;
+  position: relative;
+}
+
+.GameType {
+  height: 40px;
+  font-size: calc(8px + 1vmin);
+  color: rgb(21, 116, 241);
+}
+
+.GameDesc {
+  margin: 0 40px;
+}
+
+.GameInput {
+  position: absolute;
+  bottom: 70px;
+  width: calc(100% - 20px);
+  text-align: center;
+}
+
+.GameInput input {
+  width: 80%;
+  font-size: 24px;
+}
+
+.GameAudio {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.GameSubmit {
+  position: absolute;
+  bottom: 10px;
+  width: calc(100% - 20px);
+  text-align: center;
+  height: 40px;
+}
+
+.GameSubmit button {
+  background-color: rgb(70, 201, 99);
+  width: 400px;
+  border-radius: 10px;
+  height: 40px;
+  font-size: 18px;
+}
+
+.GameResult {
+  margin: 20px;
+  text-align: center;
+  margin-top: 80px;
+}
