@@ -14,6 +14,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "vexflow": "^3.0.9",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@types/vexflow": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "eslint": "^7.26.0",

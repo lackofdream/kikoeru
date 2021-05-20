@@ -1,0 +1,32 @@
+.KeyWhite {
+  max-width: 8.8rem;
+  background: linear-gradient(-30deg,#f8f8f8,#fff);
+  height: 100%;
+  box-shadow: inset 1px 1px black;
+}
+
+.KeyBlack {
+  background: linear-gradient(-20deg,#222,#000,#222);
+  z-index: 1;
+  top: 0;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 60%;
+  left: 100%;
+  position: absolute;
+}
+
+.KeyComb {
+  flex: 1;
+  max-width: 8.8rem;
+  position: relative;
+}
+
+.Piano {
+  display: flex;
+  height: 200px;
+  background-color: black;
+  width: 1600px;
+  justify-content: center;
+  overflow: hidden;
+}
